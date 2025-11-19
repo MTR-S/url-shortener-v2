@@ -57,7 +57,7 @@ public class Base62 implements Encoder, Decoder {
             char character = shortCode.charAt(index);
 
             if (character >= LOOKUP_TABLE.length || LOOKUP_TABLE[character] == -1) {
-                throw new IllegalArgumentException("Caractere inválido: " + character);
+                throw new IllegalArgumentException("Invalid character: " + character);
             }
 
             int value = LOOKUP_TABLE[character];
