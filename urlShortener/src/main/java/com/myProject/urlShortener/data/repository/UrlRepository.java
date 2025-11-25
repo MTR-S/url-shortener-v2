@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UrlRepository {
     void save(String shortCode, String originalUrl);
     Optional<String> findByShortCode(String shortCode);
+    long incrementAndGetId();
 }
