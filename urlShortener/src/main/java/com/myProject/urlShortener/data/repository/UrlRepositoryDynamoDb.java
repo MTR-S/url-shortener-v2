@@ -23,7 +23,7 @@ public class UrlRepositoryDynamoDb implements UrlRepository {
     public UrlRepositoryDynamoDb(DynamoDbClient dynamoDbClient, DynamoDbEnhancedClient enhancedClient) {
         this.dynamoDbClient = dynamoDbClient;
         this.enhancedClient = enhancedClient;
-        this.urlTable = enhancedClient.table("UrlShortenerV2", TableSchema.fromBean(UrlEntity.class));
+        this.urlTable = enhancedClient.table(System.getenv("TABLE_NAME"), TableSchema.fromBean(UrlEntity.class));
     }
 
     @Override
