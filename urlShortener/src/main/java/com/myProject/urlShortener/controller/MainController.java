@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class MainController {
 
@@ -20,7 +22,9 @@ public class MainController {
 
     @PostMapping("/shorten")
     public ResponseEntity<ShortenUrlResponse> shorten(@RequestBody ShortenUrlRequest request, HttpServletRequest servletRequest) {
-        String shortCode = urlService.shortMyUrl(request.originalUrl());
+        Optional<Long> expirateAt = Optional.of(request.expirationTime());
+
+        String shortCode = urlService.shortMyUrl(request.originalUrl(), expirateAt.get());
 
         String redirectUrl = servletRequest.getRequestURL().toString().replace("/shorten", "/" + shortCode);
 
