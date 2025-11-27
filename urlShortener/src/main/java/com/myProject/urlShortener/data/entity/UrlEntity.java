@@ -1,22 +1,24 @@
 package com.myProject.urlShortener.data.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-@Getter
-@Setter
+@Data
 @DynamoDbBean
 public class UrlEntity {
     private String shortCode;
     private String originalUrl;
+    private Long expirationTime;
+    private Long clickCount;
 
     public UrlEntity() {}
 
-    public UrlEntity(String shortCode, String originalUrl) {
+    public UrlEntity(String shortCode, String originalUrl, Long expirationTime) {
         this.shortCode = shortCode;
         this.originalUrl = originalUrl;
+        this.expirationTime = expirationTime;
+        this.clickCount = 0L;
     }
 
     @DynamoDbPartitionKey
