@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Component
 public class Base62 implements Encoder, Decoder {
     private static final String BASE62_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final int BASE = 62;
