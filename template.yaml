@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Url Shortener V2 - Arquitetura Serverless com Spring Boot 3 e DynamoDB
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 2048
+    Environment:
+      Variables:
+        TABLE_NAME: UrlShortenerV2
+        HASH_SALT: "SuaChaveSuperSecretaAleatoriaQueNinguemDescobre123"
+
+Resources:
+  ServerlessHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      DefaultRouteSettings:
+          ThrottlingBurstLimit: 10
+          ThrottlingRateLimit: 5
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+        AllowOrigins:
+          - "*"
+
+  UrlShortenerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: com.myProject.urlShortener.StreamLambdaHandler::handleRequest
+      Runtime: java21
+      Architectures:
+        - x86_64
+      AutoPublishAlias: live
+      SnapStart:
+        ApplyOn: PublishedVersions
+
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: UrlShortenerV2
+
+      Events:
+        HttpApi:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+            ApiId: !Ref ServerlessHttpApi
+
+
+Outputs:
+  UrlShortenerApi:
+    Description: "API Gateway URL created"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
