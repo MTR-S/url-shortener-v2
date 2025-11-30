@@ -1,10 +1,12 @@
 package com.myProject.urlShortener.data.repository;
 
 import com.myProject.urlShortener.data.entity.UrlEntity;
+import com.myProject.urlShortener.data.repository.interfaces.UrlRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
@@ -29,9 +31,17 @@ public class UrlRepositoryDynamoDb implements UrlRepository {
 
     @Override
     public void save(String shortCode, String originalUrl, Long expirationTime) {
-        UrlEntity entity = new UrlEntity(shortCode, originalUrl, expirationTime);
+        try {
+            UrlEntity entity = new UrlEntity(shortCode, originalUrl, expirationTime);
 
-        urlTable.putItem(entity);
+            Expression condition = Expression.builder()
+                    .expression("attribute_not_exists(shortCode)")
+                    .build();
+
+            urlTable.putItem(r -> r.item(entity).conditionExpression(condition));
+        } catch (ConditionalCheckFailedException e) {
+            throw new RuntimeException("Alias already taken.");
+        }
     }
 
     @Override
@@ -103,5 +113,21 @@ public class UrlRepositoryDynamoDb implements UrlRepository {
         long expirationTime = Long.parseLong(attributes.get("expirationTime").n());
 
         return Optional.of(new UrlEntity(shortCode, originalUrl, expirationTime));
+    }
+
+    @Override
+    public void saveCustomAlias(String shortCode, String originalUrl, long expirationTime) {
+        try {
+            UrlEntity entity = new UrlEntity(shortCode, originalUrl, expirationTime);
+
+            Expression condition = Expression.builder()
+                    .expression("attribute_not_exists(shortCode)")
+                    .build();
+
+            urlTable.putItem(requestBuilder -> requestBuilder.item(entity).conditionExpression(condition));
+
+        } catch (ConditionalCheckFailedException e) {
+            throw new IllegalArgumentException("Alias already taken.");
+        }
     }
 }
