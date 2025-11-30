@@ -1,4 +1,4 @@
 package com.myProject.urlShortener.data.dto;
 
-public record ShortenUrlRequest(String originalUrl, Long expirationTime) {
+public record ShortenUrlRequest(String originalUrl, Long expirationTime, String customAlias) {
 }
