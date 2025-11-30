@@ -23,8 +23,17 @@ public class MainController {
     @PostMapping("/shorten")
     public ResponseEntity<ShortenUrlResponse> shorten(@RequestBody ShortenUrlRequest request, HttpServletRequest servletRequest) {
         Optional<Long> expirateAt = Optional.of(request.expirationTime());
+        String shortCode;
 
-        String shortCode = urlService.shortMyUrl(request.originalUrl(), expirateAt.get());
+        try {
+            shortCode = urlService.shortMyUrl(request.originalUrl(), expirateAt.get(), request.customAlias());
+
+        } catch (IllegalArgumentException e) { // Status 400/409
+            if (e.getMessage().equals("Alias already taken.")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            throw e;
+        }
 
         String redirectUrl = servletRequest.getRequestURL().toString().replace("/shorten", "/" + shortCode);
 
