@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Url Shortener V2 - Arquitetura Serverless com Spring Boot 3 e DynamoDB
+  Serverless architecture with Spring Boot 3 and DynamoDB.
 
 Globals:
   Function:
@@ -10,7 +10,7 @@ Globals:
     Environment:
       Variables:
         TABLE_NAME: UrlShortenerV2
-        HASH_SALT: "SuaChaveSuperSecretaAleatoriaQueNinguemDescobre123"
+        HASH_SALT: "MyRandomSuperSecretKeyThatNobodyDiscovers123"
 
 Resources:
   ServerlessHttpApi:
