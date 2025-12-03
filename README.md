@@ -151,4 +151,5 @@ The workflow file: .github/workflows/pipeline.yml handles the CI/CD:
 
 # Author
 Developed by **Matheus de Sousa Almeida**
+
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/matheus-de-sousa-almeida-143419261/)
