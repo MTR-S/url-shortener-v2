@@ -63,6 +63,21 @@ graph LR
 
 #  Running the Project Locally
 
+## Configuration (Environment Variables)
+
+This project uses **Hashids** for security, requiring a Secret Salt. To run locally, you must configure it.
+
+1.  Create a file named `env.json` in the root directory.
+2.  Add your local secret key:
+
+```json
+{
+  "UrlShortenerFunction": {
+    "HASH_SALT": "PUT_YOUR_LOCAL_SECRET_KEY_HERE"
+  }
+}
+```
+
 ## Prerequisites
 Before running, ensure you have the following installed:
 - Java 21+
@@ -101,7 +116,7 @@ The API will be available at: http://127.0.0.1:3000
 # API Documentation 
 ### 1. Create Short URL
 
-**POST** /shorten
+**POST** `/shorten`
 
 Payload (JSON):
 
@@ -125,7 +140,7 @@ Responses:
 | **429 Too Many Requests** | Rate limit exceeded            |
 
 ### 2. Redirect 
-  **GET** /{shortCode}
+  **GET** `/{shortCode}`
 
 - Returns 302 Found and redirects the user to the original URL while asynchronously tracking the click..
 
