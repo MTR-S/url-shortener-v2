@@ -53,4 +53,5 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --resolve-s3
+            --resolve-s3 \
+            --parameter-overrides HashSaltParam=${{ secrets.HASH_SALT_PROD }}
