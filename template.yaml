@@ -3,6 +3,12 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   Serverless architecture with Spring Boot 3 and DynamoDB.
 
+Parameters:
+  HashSaltParam:
+    Type: String
+    Description: "Salt para gerar os Hashids"
+    NoEcho: true
+
 Globals:
   Function:
     Timeout: 30
@@ -10,7 +16,7 @@ Globals:
     Environment:
       Variables:
         TABLE_NAME: UrlShortenerV2
-        HASH_SALT: "MyRandomSuperSecretKeyThatNobodyDiscovers123"
+        HASH_SALT: !Ref HashSaltParam
 
 Resources:
   ServerlessHttpApi:
