@@ -34,3 +34,4 @@ build/
 
 ## AWS ###
 .aws-sam/
+env.json
