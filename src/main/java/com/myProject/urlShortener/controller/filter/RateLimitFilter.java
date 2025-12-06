@@ -18,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RateLimitFilter implements Filter {
 
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
+    private static final int MAX_CAPACITY = 5;
+    private static final int REFILL_DURATION = 10;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -40,12 +42,12 @@ public class RateLimitFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             response.setStatus(429);
-            response.getWriter().write("{\"error\": \"Too Many Requests. Slow down!\"}");
+            response.getWriter().write("{\"error\": \"Too Many Requests. Slow down! Wait: " + REFILL_DURATION/MAX_CAPACITY + "minutes for your next request\"}");
         }
     }
 
     private Bucket createNewBucket(String key) {
-        Bandwidth limit = Bandwidth.classic(5, Refill.greedy(5, Duration.ofMinutes(10)));
+        Bandwidth limit = Bandwidth.classic(MAX_CAPACITY, Refill.greedy(MAX_CAPACITY, Duration.ofMinutes(REFILL_DURATION)));
 
         return Bucket.builder().addLimit(limit).build();
     }
