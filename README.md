@@ -63,6 +63,13 @@ graph LR
 
 #  Running the Project Locally
 
+## Prerequisites
+Before running, ensure you have the following installed:
+- Java 21+
+- Maven
+- Docker (Required for SAM local)
+- AWS SAM CLI
+
 ## Configuration (Environment Variables)
 
 This project uses **Hashids** for security, requiring a Secret Salt. To run locally, you must configure it.
@@ -77,13 +84,6 @@ This project uses **Hashids** for security, requiring a Secret Salt. To run loca
   }
 }
 ```
-
-## Prerequisites
-Before running, ensure you have the following installed:
-- Java 21+
-- Maven
-- Docker (Required for SAM local)
-- AWS SAM CLI
 
 ## **1. Clone and Build**
 
