@@ -22,11 +22,14 @@ public class MainController {
 
     @PostMapping("/shorten")
     public ResponseEntity<ShortenUrlResponse> shorten(@RequestBody ShortenUrlRequest request, HttpServletRequest servletRequest) {
-        Optional<Long> expirateAt = Optional.of(request.expirationTime());
         String shortCode;
 
         try {
-            shortCode = urlService.shortMyUrl(request.originalUrl(), expirateAt.get(), request.customAlias());
+            shortCode = urlService.shortMyUrl(
+                    request.originalUrl(),
+                    request.expirationTime() != null ? request.expirationTime() : 0L,
+                    request.customAlias()
+            );
 
         } catch (IllegalArgumentException e) { // Status 400/409
             if (e.getMessage().equals("Alias already taken.")) {

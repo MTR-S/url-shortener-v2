@@ -35,7 +35,6 @@ public class RateLimitFilter implements Filter {
 
         String ip = getAwsUserRealIp(request);
 
-        // Pega ou cria o balde para esse IP
         Bucket bucket = cache.computeIfAbsent(ip, this::createNewBucket);
 
         if (bucket.tryConsume(1)) {
