@@ -164,6 +164,15 @@ The workflow file: .github/workflows/pipeline.yml handles the CI/CD:
 
 ---
 
+## Future Improvements
+
+This project is constantly evolving. Here are the next steps to make it even more production-ready:
+
+* **Custom Domain (Brand Identity):** Currently, the API uses the default AWS API Gateway endpoint (`...amazonaws.com`) to keep the project **cost-free**. In a real-world scenario, I would integrate **AWS Route 53** and **AWS Certificate Manager (ACM)** to map a short domain (e.g., `my.lnk/xyz`) with a valid SSL certificate.
+* **User Authentication:** Implement **AWS Cognito** to allow users to create accounts, manage their own links, and view private analytics.
+
+---
+
 # Author
 Developed by **Matheus de Sousa Almeida**
 
